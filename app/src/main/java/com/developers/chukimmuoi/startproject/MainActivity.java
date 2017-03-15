@@ -7,7 +7,9 @@ import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
 
 import java.util.Objects;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +19,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button1:
                 showDialogBasic("title 1", "content 1", "positive 1", new ICallback() {
                     @Override

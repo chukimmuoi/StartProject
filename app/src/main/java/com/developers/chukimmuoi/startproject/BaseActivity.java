@@ -1,7 +1,10 @@
 package com.developers.chukimmuoi.startproject;
 
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -28,6 +31,18 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
 
     static final String TAG = BaseActivity.class.getSimpleName();
 
+    public Typeface typefaceBold;
+
+    public Typeface typefaceItalic;
+
+    public Typeface typefaceLight;
+
+    public Typeface typefaceMedium;
+
+    public Typeface typefaceRegular;
+
+    public Typeface typefaceThin;
+
     private MaterialDialog mMaterialDialog;
 
     private Toast mToast;
@@ -37,6 +52,22 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
         super.setContentView(layoutResID);
 
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        createTypeface();
+    }
+
+    private void createTypeface() {
+        typefaceBold    = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+        typefaceItalic  = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Italic.ttf");
+        typefaceLight   = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        typefaceMedium  = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+        typefaceRegular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+        typefaceThin    = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
     }
 
     @Override
