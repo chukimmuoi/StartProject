@@ -13,6 +13,8 @@ import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
  */
 
 public interface IBaseView {
+    void createTypeface();
+
     void showDialogBasic(String title, String content,
                          String positive, ICallback positiveCallback,
                          String negative, ICallback negativeCallback,

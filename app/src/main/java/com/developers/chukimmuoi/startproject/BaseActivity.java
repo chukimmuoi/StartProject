@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.developers.chukimmuoi.shared.utils.TypefaceUtil;
 import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
 import com.developers.chukimmuoi.startproject.view.IBaseView;
 
@@ -61,7 +62,10 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
         createTypeface();
     }
 
-    private void createTypeface() {
+    @Override
+    public void createTypeface() {
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Roboto-Regular.ttf");
+
         typefaceBold    = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
         typefaceItalic  = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Italic.ttf");
         typefaceLight   = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
