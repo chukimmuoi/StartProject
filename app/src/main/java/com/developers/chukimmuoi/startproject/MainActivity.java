@@ -1,6 +1,7 @@
 package com.developers.chukimmuoi.startproject;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -16,25 +17,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button1:
-                break;
-            case R.id.button2:
-                break;
-            case R.id.button3:
-                break;
-            case R.id.button4:
-                break;
-            case R.id.button5:
-                break;
-            case R.id.button6:
-                break;
-            case R.id.button7:
-                break;
-            case R.id.button8:
-                break;
-            case R.id.button9:
-                break;
-            case R.id.button10:
+            case R.id.btn_test:
+                Log.e(TAG, "Button Test");
                 break;
         }
     }
