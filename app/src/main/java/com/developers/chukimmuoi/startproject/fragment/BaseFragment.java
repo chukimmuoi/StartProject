@@ -1,5 +1,6 @@
 package com.developers.chukimmuoi.startproject.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,31 @@ public abstract class BaseFragment extends Fragment {
 
     protected BaseActivity mContext;
 
+    /**
+     * 1. Call when Fragment connect Activity.
+     * {@link #onDetach()}
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mContext = (BaseActivity) getActivity();
+    }
+
+    /**
+     * 2. Use onCreate variable not UI.
+     * eg: context, adapter, arrayList
+     * {@link #onDestroy()}
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    /**
+     * 3. Set layout XML.
+     * {@link #onDestroyView()}
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -37,12 +63,67 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 4. Set variable UI.
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mContext = (BaseActivity) getActivity();
 
         createView(view, savedInstanceState);
+    }
+
+    /**
+     * 5. Call when Activity complete method onCreate().
+     */
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    /**
+     * 5. Call when fragment ready show on screen.
+     * {@link #onStop()}
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    /**
+     * 6. Handle resources. Multi screen.
+     * {@link #onPause()}
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mContext = null;
     }
 
     public abstract View setLayout(LayoutInflater inflater, ViewGroup container,

@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.developers.chukimmuoi.startproject.MainActivity">
 
-    <fragment
-        android:id="@+id/test_fragment"
-        android:name="com.developers.chukimmuoi.startproject.fragment.TestFragment"
+    <FrameLayout
+        android:id="@+id/fragment_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    </FrameLayout>
 
-    </fragment>
 </RelativeLayout>
