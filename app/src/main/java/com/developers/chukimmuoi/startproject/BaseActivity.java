@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -14,7 +16,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.developers.chukimmuoi.shared.utils.TypefaceUtil;
 import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
-import com.developers.chukimmuoi.startproject.view.IBaseView;
+import com.developers.chukimmuoi.startproject.view.IBaseActivityView;
+import com.developers.chukimmuoi.startproject.view.IBaseFragmentView;
 
 import butterknife.ButterKnife;
 
@@ -28,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by chukimmuoi on 3/11/17.
  */
 
-public class BaseActivity extends FragmentActivity implements IBaseView {
+public class BaseActivity extends FragmentActivity implements IBaseActivityView, IBaseFragmentView {
 
     static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -48,6 +51,8 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
 
     private Toast mToast;
 
+    private FragmentManager mFragmentManager;
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -60,6 +65,8 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
         super.onCreate(savedInstanceState);
 
         createTypeface();
+
+        mFragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -304,14 +311,27 @@ public class BaseActivity extends FragmentActivity implements IBaseView {
     }
 
     @Override
+    public Fragment findingFragment(int layoutId) {
+        return mFragmentManager.findFragmentById(layoutId);
+    }
+
+    @Override
+    public Fragment findingFragment(String tag) {
+        return mFragmentManager.findFragmentByTag(tag);
+    }
+
+    @Override
     protected void onStop() {
-        super.onStop();
         dismissDialog();
         dismissToast();
+
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        mFragmentManager = null;
+
         super.onDestroy();
     }
 }

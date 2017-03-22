@@ -32,6 +32,10 @@ public class TestFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.btn_test)
     public Button mBtnTest;
 
+    @Override
+    protected void createVariableNormal() {
+
+    }
 
     @Override
     public View setLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class TestFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void createView(View view, Bundle savedInstanceState) {
+    protected void createVariableView(View view, Bundle savedInstanceState) {
         mTvTest.setTypeface(mContext.typefaceRegular);
 
         mBtnTest.setTypeface(mContext.typefaceRegular);

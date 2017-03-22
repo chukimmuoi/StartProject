@@ -46,6 +46,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createVariableNormal();
     }
 
     /**
@@ -70,7 +72,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        createView(view, savedInstanceState);
+        createVariableView(view, savedInstanceState);
     }
 
     /**
@@ -126,8 +128,10 @@ public abstract class BaseFragment extends Fragment {
         mContext = null;
     }
 
-    public abstract View setLayout(LayoutInflater inflater, ViewGroup container,
+    protected abstract void createVariableNormal();
+
+    protected abstract View setLayout(LayoutInflater inflater, ViewGroup container,
                                    Bundle savedInstanceState);
 
-    public abstract void createView(View view, Bundle savedInstanceState);
+    protected abstract void createVariableView(View view, Bundle savedInstanceState);
 }

@@ -12,7 +12,7 @@ import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
  * Created by chukimmuoi on 3/12/17.
  */
 
-public interface IBaseView {
+public interface IBaseActivityView {
     void createTypeface();
 
     void showDialogBasic(String title, String content,
