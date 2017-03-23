@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.developers.chukimmuoi.shared.utils.TypefaceUtil;
+import com.developers.chukimmuoi.startproject.fragment.BaseFragment;
 import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
 import com.developers.chukimmuoi.startproject.view.IBaseActivityView;
 import com.developers.chukimmuoi.startproject.view.IBaseFragmentView;
@@ -33,7 +34,8 @@ import butterknife.ButterKnife;
  * Created by chukimmuoi on 3/11/17.
  */
 
-public class BaseActivity extends FragmentActivity implements IBaseActivityView, IBaseFragmentView {
+public class BaseActivity extends FragmentActivity implements IBaseActivityView, IBaseFragmentView,
+        BaseFragment.OnFragmentListener {
 
     static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -333,6 +335,14 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         fragmentTransaction.replace(idLayoutContainer, fragment, tag);
 
         fragmentTransaction.commit();
+    }
+
+    /**
+     * Handle event multi fragment
+     */
+    @Override
+    public void onFragmentAction(int layoutId, @Nullable int event) {
+
     }
 
     @Override

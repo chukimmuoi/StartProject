@@ -27,6 +27,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected BaseActivity mContext;
 
+    protected OnFragmentListener mFragmentListener;
+
     /**
      * 1. Call when Fragment connect Activity.
      * {@link #onDetach()}
@@ -36,6 +38,10 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
 
         mContext = (BaseActivity) getActivity();
+
+        if(mContext instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) mContext;
+        }
     }
 
     /**
@@ -146,4 +152,8 @@ public abstract class BaseFragment extends Fragment {
                                       Bundle savedInstanceState);
 
     protected abstract void createVariableView(View view, Bundle savedInstanceState);
+
+    public interface OnFragmentListener {
+        void onFragmentAction(int layoutId, @Nullable int event);
+    }
 }
