@@ -1,5 +1,6 @@
 package com.developers.chukimmuoi.startproject.view;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /**
@@ -16,4 +17,6 @@ public interface IBaseFragmentView {
     Fragment findingFragment(int layoutId);
 
     Fragment findingFragment(String tag);
+
+    void showingFragment(Fragment fragment, Bundle bundle, int idLayoutContainer, String tag);
 }

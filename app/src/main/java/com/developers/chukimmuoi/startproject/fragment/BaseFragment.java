@@ -47,6 +47,11 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            createVariableStart(bundle);
+        }
+
         createVariableNormal();
     }
 
@@ -128,10 +133,17 @@ public abstract class BaseFragment extends Fragment {
         mContext = null;
     }
 
+    /**
+     * Bundle bundle = getArguments()
+     */
+    protected void createVariableStart(Bundle bundle) {
+
+    }
+
     protected abstract void createVariableNormal();
 
     protected abstract View setLayout(LayoutInflater inflater, ViewGroup container,
-                                   Bundle savedInstanceState);
+                                      Bundle savedInstanceState);
 
     protected abstract void createVariableView(View view, Bundle savedInstanceState);
 }

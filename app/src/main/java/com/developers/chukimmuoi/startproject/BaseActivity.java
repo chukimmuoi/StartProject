@@ -2,12 +2,14 @@ package com.developers.chukimmuoi.startproject;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -318,6 +320,19 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
     @Override
     public Fragment findingFragment(String tag) {
         return mFragmentManager.findFragmentByTag(tag);
+    }
+
+    @Override
+    public void showingFragment(Fragment fragment, @Nullable Bundle bundle,
+                                @IdRes int idLayoutContainer, String tag) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+
+        if (bundle != null) {
+            fragment.setArguments(bundle);
+        }
+        fragmentTransaction.replace(idLayoutContainer, fragment, tag);
+
+        fragmentTransaction.commit();
     }
 
     @Override
