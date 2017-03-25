@@ -18,5 +18,9 @@ public interface IBaseFragmentView {
 
     Fragment findingFragment(String tag);
 
-    void showingFragment(Fragment fragment, Bundle bundle, int idLayoutContainer, String tag);
+    void displayAloneFragment(Fragment fragment, Bundle bundle, int idLayoutContainer, String tag);
+
+    void displayMultiFragment(Fragment fragment, Bundle bundle, int idLayoutContainer, String tag);
+
+    void backStackFragment();
 }

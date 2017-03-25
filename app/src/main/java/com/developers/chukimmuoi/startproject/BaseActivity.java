@@ -22,6 +22,8 @@ import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
 import com.developers.chukimmuoi.startproject.view.IBaseActivityView;
 import com.developers.chukimmuoi.startproject.view.IBaseFragmentView;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 
 /**
@@ -324,8 +326,14 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         return mFragmentManager.findFragmentByTag(tag);
     }
 
+    /**
+     * @param fragment FragmentCustom extend BaseFragment
+     * @param bundle Set first data
+     * @param idLayoutContainer FrameLayout
+     * @param tag FragmentCustom.class.getCanonicalName() or this.getClass().getCanonicalName()
+     */
     @Override
-    public void showingFragment(Fragment fragment, @Nullable Bundle bundle,
+    public void displayAloneFragment(Fragment fragment, @Nullable Bundle bundle,
                                 @IdRes int idLayoutContainer, String tag) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
@@ -334,7 +342,48 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         }
         fragmentTransaction.replace(idLayoutContainer, fragment, tag);
 
+        fragmentTransaction.addToBackStack(tag);
+
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void displayMultiFragment(Fragment fragment, @Nullable Bundle bundle,
+                                     @IdRes int idLayoutContainer, String tag) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+
+        if (fragment.isAdded()) {
+            fragmentTransaction.show(fragment);
+        } else {
+            if (bundle != null) {
+                fragment.setArguments(bundle);
+            }
+            fragmentTransaction.add(idLayoutContainer, fragment, tag);
+        }
+
+        List<Fragment> listFragment = mFragmentManager.getFragments();
+        if (listFragment != null) {
+            int size = listFragment.size();
+            if (size > 0) {
+                for (Fragment itemFragment : listFragment) {
+                    if (itemFragment.getTag() != tag) {
+                        fragmentTransaction.hide(itemFragment);
+                    } else {
+                        fragmentTransaction.show(itemFragment);
+                    }
+                }
+            }
+        }
+
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void backStackFragment() {
+        int countFragment = mFragmentManager.getBackStackEntryCount();
+        if (countFragment > 0) {
+            mFragmentManager.popBackStack();
+        }
     }
 
     /**
