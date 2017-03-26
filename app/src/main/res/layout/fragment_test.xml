@@ -3,17 +3,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_test"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
 
-    <Button
-        android:id="@+id/btn_test"
+    <LinearLayout
+        android:id="@+id/layout_frm_a"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_test"
-        android:onClick="onClick"
-        android:text="Test" />
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/btn_frm_a1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentA1" />
+
+        <Button
+            android:id="@+id/btn_frm_a2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentA2" />
+
+        <Button
+            android:id="@+id/btn_frm_a3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentA3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_frm_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_frm_a"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_frm_b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentB1" />
+
+        <Button
+            android:id="@+id/btn_frm_b2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentB2" />
+
+        <Button
+            android:id="@+id/btn_frm_b3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentB3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_frm_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_frm_b"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_frm_c1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentC1" />
+
+        <Button
+            android:id="@+id/btn_frm_c2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentC2" />
+
+        <Button
+            android:id="@+id/btn_frm_c3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="fragmentC3" />
+    </LinearLayout>
 </RelativeLayout>

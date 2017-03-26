@@ -22,8 +22,6 @@ import com.developers.chukimmuoi.startproject.listener.callback.ICallback;
 import com.developers.chukimmuoi.startproject.view.IBaseActivityView;
 import com.developers.chukimmuoi.startproject.view.IBaseFragmentView;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 
 /**
@@ -327,57 +325,86 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
     }
 
     /**
-     * @param fragment FragmentCustom extend BaseFragment
-     * @param bundle Set first data
      * @param idLayoutContainer FrameLayout
-     * @param tag FragmentCustom.class.getCanonicalName() or this.getClass().getCanonicalName()
+     * @param fragment          new Fragment()
+     * @param tag               FragmentCustom.class.getCanonicalName() or this.getClass().getCanonicalName()
+     * @param isSaveCache       saveCache back stack
+     * @param bundle            Set first data
      */
     @Override
-    public void displayAloneFragment(Fragment fragment, @Nullable Bundle bundle,
-                                @IdRes int idLayoutContainer, String tag) {
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache, @Nullable Bundle bundle) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
         if (bundle != null) {
             fragment.setArguments(bundle);
         }
         fragmentTransaction.replace(idLayoutContainer, fragment, tag);
-
-        fragmentTransaction.addToBackStack(tag);
+        if (isSaveCache) {
+            fragmentTransaction.addToBackStack(tag);
+        }
 
         fragmentTransaction.commit();
     }
 
     @Override
-    public void displayMultiFragment(Fragment fragment, @Nullable Bundle bundle,
-                                     @IdRes int idLayoutContainer, String tag) {
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache) {
+        displayFragment(idLayoutContainer, fragment, tag, isSaveCache, null);
+    }
+
+    /**
+     * @param idLayoutContainer FrameLayout
+     * @param fragment          new Fragment()
+     * @param tag               FragmentCustom.class.getCanonicalName() or this.getClass().getCanonicalName()
+     * @param tagParent         get fragment parent
+     * @param bundle            Set first data
+     */
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                     @Nullable String tagParent, @Nullable Bundle bundle) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
+        //Hide fragment parent.
+        if (!TextUtils.isEmpty(tagParent)) {
+            Fragment parentFragment = findingFragment(tagParent);
+            if (parentFragment != null) {
+                fragmentTransaction.hide(parentFragment);
+            }
+        }
+
+        //Show fragment if exist.
         if (fragment.isAdded()) {
             fragmentTransaction.show(fragment);
-        } else {
+        }
+        //If fragment not exist.
+        else {
+            //Remove old fragment if old fragment = tag.
+            Fragment fragmentOld = findingFragment(tag);
+            if (fragmentOld != null) {
+                fragmentTransaction.remove(fragmentOld);
+            }
+
+            //Add new fragment.
             if (bundle != null) {
                 fragment.setArguments(bundle);
             }
-            fragmentTransaction.add(idLayoutContainer, fragment, tag);
-        }
 
-        List<Fragment> listFragment = mFragmentManager.getFragments();
-        if (listFragment != null) {
-            int size = listFragment.size();
-            if (size > 0) {
-                for (Fragment itemFragment : listFragment) {
-                    if (itemFragment.getTag() != tag) {
-                        fragmentTransaction.hide(itemFragment);
-                    } else {
-                        fragmentTransaction.show(itemFragment);
-                    }
-                }
-            }
+            fragmentTransaction.add(idLayoutContainer, fragment, tag);
         }
 
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                     @Nullable String tagParent) {
+        displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, null);
+    }
+
+    /**
+     * Event key back
+     */
     @Override
     public void backStackFragment() {
         int countFragment = mFragmentManager.getBackStackEntryCount();
