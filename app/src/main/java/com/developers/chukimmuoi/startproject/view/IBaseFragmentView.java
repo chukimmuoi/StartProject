@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 /**
  * @author : Hanet Electronics
@@ -16,9 +17,18 @@ import android.support.v4.app.Fragment;
  */
 
 public interface IBaseFragmentView {
+    Fragment findingFragment(@IdRes int layoutId, FragmentManager fragmentManager);
+
     Fragment findingFragment(@IdRes int layoutId);
 
+    Fragment findingFragment(String tag, FragmentManager fragmentManager);
+
     Fragment findingFragment(String tag);
+
+
+    void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                         boolean isSaveCache, @Nullable Bundle bundle,
+                         FragmentManager fragmentManager);
 
     void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
                          boolean isSaveCache, @Nullable Bundle bundle);
@@ -27,10 +37,16 @@ public interface IBaseFragmentView {
                          boolean isSaveCache);
 
     void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                              @Nullable String tagParent, @Nullable Bundle bundle,
+                              FragmentManager fragmentManager);
+
+    void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
                               @Nullable String tagParent, @Nullable Bundle bundle);
 
     void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
                               @Nullable String tagParent);
+
+    void backStackFragment(FragmentManager fragmentManager);
 
     void backStackFragment();
 }

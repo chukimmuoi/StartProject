@@ -2,13 +2,16 @@ package com.developers.chukimmuoi.startproject.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.developers.chukimmuoi.startproject.BaseActivity;
+import com.developers.chukimmuoi.startproject.view.IBaseFragmentView;
 
 import butterknife.ButterKnife;
 
@@ -22,12 +25,14 @@ import butterknife.ButterKnife;
  * Created by chukimmuoi on 3/19/17.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements IBaseFragmentView{
     private static final String TAG = BaseFragment.class.getSimpleName();
 
     protected BaseActivity mContext;
 
     protected OnFragmentListener mFragmentListener;
+
+    protected FragmentManager mFragmentManager;
 
     /**
      * 1. Call when Fragment connect Activity.
@@ -39,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
 
         mContext = (BaseActivity) getActivity();
 
-        if(mContext instanceof OnFragmentListener) {
+        if (mContext instanceof OnFragmentListener) {
             mFragmentListener = (OnFragmentListener) mContext;
         }
     }
@@ -52,6 +57,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFragmentManager = getChildFragmentManager();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -129,6 +136,8 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        mFragmentManager = null;
+
         super.onDestroy();
     }
 
@@ -157,5 +166,72 @@ public abstract class BaseFragment extends Fragment {
 
     public interface OnFragmentListener {
         void onFragmentAction(int layoutId, @Nullable int event);
+    }
+
+    @Override
+    public Fragment findingFragment(@IdRes int layoutId, FragmentManager fragmentManager) {
+        return mContext.findingFragment(layoutId, fragmentManager);
+    }
+
+    @Override
+    public Fragment findingFragment(@IdRes int layoutId) {
+        return findingFragment(layoutId, mFragmentManager);
+    }
+
+    @Override
+    public Fragment findingFragment(String tag, FragmentManager fragmentManager) {
+        return mContext.findingFragment(tag, fragmentManager);
+    }
+
+    @Override
+    public Fragment findingFragment(String tag) {
+        return findingFragment(tag, mFragmentManager);
+    }
+
+    @Override
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache, @Nullable Bundle bundle,
+                                FragmentManager fragmentManager) {
+        mContext.displayFragment(idLayoutContainer, fragment, tag, isSaveCache, bundle, fragmentManager);
+    }
+
+    @Override
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache, @Nullable Bundle bundle) {
+        displayFragment(idLayoutContainer, fragment, tag, isSaveCache, bundle, mFragmentManager);
+    }
+
+    @Override
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache) {
+        displayFragment(idLayoutContainer, fragment, tag, isSaveCache, null);
+    }
+
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                     @Nullable String tagParent, @Nullable Bundle bundle,
+                                     FragmentManager fragmentManager) {
+        mContext.displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, bundle, fragmentManager);
+    }
+
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                     @Nullable String tagParent, @Nullable Bundle bundle) {
+        displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, bundle, mFragmentManager);
+    }
+
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag, @Nullable String tagParent) {
+        displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, null);
+    }
+
+    @Override
+    public void backStackFragment(FragmentManager fragmentManager) {
+        mContext.backStackFragment(fragmentManager);
+    }
+
+    @Override
+    public void backStackFragment() {
+        backStackFragment(mFragmentManager);
     }
 }

@@ -315,13 +315,23 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
     }
 
     @Override
+    public Fragment findingFragment(@IdRes int layoutId, FragmentManager fragmentManager) {
+        return fragmentManager.findFragmentById(layoutId);
+    }
+
+    @Override
     public Fragment findingFragment(int layoutId) {
-        return mFragmentManager.findFragmentById(layoutId);
+        return findingFragment(layoutId, mFragmentManager);
+    }
+
+    @Override
+    public Fragment findingFragment(String tag, FragmentManager fragmentManager) {
+        return fragmentManager.findFragmentByTag(tag);
     }
 
     @Override
     public Fragment findingFragment(String tag) {
-        return mFragmentManager.findFragmentByTag(tag);
+        return findingFragment(tag, mFragmentManager);
     }
 
     /**
@@ -333,8 +343,9 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
      */
     @Override
     public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
-                                boolean isSaveCache, @Nullable Bundle bundle) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                                boolean isSaveCache, @Nullable Bundle bundle,
+                                FragmentManager fragmentManager) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         if (bundle != null) {
             fragment.setArguments(bundle);
@@ -345,6 +356,12 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         }
 
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void displayFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                boolean isSaveCache, @Nullable Bundle bundle) {
+        displayFragment(idLayoutContainer, fragment, tag, isSaveCache, bundle, mFragmentManager);
     }
 
     @Override
@@ -362,8 +379,9 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
      */
     @Override
     public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
-                                     @Nullable String tagParent, @Nullable Bundle bundle) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                                     @Nullable String tagParent, @Nullable Bundle bundle,
+                                     FragmentManager fragmentManager) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         //Hide fragment parent.
         if (!TextUtils.isEmpty(tagParent)) {
@@ -398,19 +416,31 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
 
     @Override
     public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
+                                     @Nullable String tagParent, @Nullable Bundle bundle) {
+        displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, bundle, mFragmentManager);
+    }
+
+    @Override
+    public void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
                                      @Nullable String tagParent) {
         displayMultiFragment(idLayoutContainer, fragment, tag, tagParent, null);
     }
+
 
     /**
      * Event key back
      */
     @Override
-    public void backStackFragment() {
-        int countFragment = mFragmentManager.getBackStackEntryCount();
+    public void backStackFragment(FragmentManager fragmentManager) {
+        int countFragment = fragmentManager.getBackStackEntryCount();
         if (countFragment > 0) {
-            mFragmentManager.popBackStack();
+            fragmentManager.popBackStack();
         }
+    }
+
+    @Override
+    public void backStackFragment() {
+        backStackFragment(mFragmentManager);
     }
 
     /**
