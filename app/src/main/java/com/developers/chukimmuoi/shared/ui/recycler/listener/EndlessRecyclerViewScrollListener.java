@@ -1,4 +1,4 @@
-package com.developers.chukimmuoi.shared.ui.recycler;
+package com.developers.chukimmuoi.shared.ui.recycler.listener;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

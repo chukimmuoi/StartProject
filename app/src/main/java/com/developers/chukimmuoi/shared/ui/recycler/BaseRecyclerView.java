@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
+import com.developers.chukimmuoi.shared.ui.recycler.view.IBaseRecyclerView;
+
 /**
  * @author : Hanet Electronics
  * @Skype : chukimmuoi

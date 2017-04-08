@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developers.chukimmuoi.shared.ui.recycler.view.IBaseRecyclerAdapter;
+
 import java.util.List;
 
 

@@ -1,4 +1,4 @@
-package com.developers.chukimmuoi.shared.ui.recycler;
+package com.developers.chukimmuoi.shared.ui.recycler.view;
 
 /**
  * @author : Hanet Electronics
