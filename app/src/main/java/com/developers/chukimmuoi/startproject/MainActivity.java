@@ -1,7 +1,6 @@
 package com.developers.chukimmuoi.startproject;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
 
@@ -49,7 +48,7 @@ public class MainActivity extends BaseActivity {
         mListContact = Contact.createContactList(20);
         mTestAdapter = new TestAdapter(MainActivity.this, rvContact, mListContact);
         rvContact.setAdapter(mTestAdapter);
-        rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        rvContact.initLinearLayoutManager();
     }
 
     @OnClick({R.id.btn_insert1, R.id.btn_insert2,
@@ -71,7 +70,7 @@ public class MainActivity extends BaseActivity {
                 mTestAdapter.updateItem(size - 1);
                 break;
             case R.id.btn_update2:
-                for (int i = 10; i < 20; i++){
+                for (int i = 10; i < 20; i++) {
                     ((Contact) mListContact.get(i)).setName("Trinh Thi Nhai " + i);
                 }
                 mTestAdapter.updateItem(10, 10);
