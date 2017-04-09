@@ -14,4 +14,7 @@
     <color name="colorDialogNegative">#F44336</color>
     <color name="colorDialogNeutral">#607D8B</color>
     <color name="colorDialogProgress">#FF9800</color>
+
+    <!--PROGRESS-->
+    <color name="colorProgressCircle">#5588FF</color>
 </resources>

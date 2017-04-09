@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--TEXT SIZE-->
     <dimen name="text_size_small">13sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_large">24sp</dimen>
+
+    <!--PROGRESS-->
+    <dimen name="progress_circle_size">80dp</dimen>
 </resources>
