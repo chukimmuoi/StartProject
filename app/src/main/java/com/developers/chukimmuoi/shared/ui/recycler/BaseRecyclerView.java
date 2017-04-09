@@ -8,7 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 
+import com.developers.chukimmuoi.shared.ui.recycler.listener.EndlessRecyclerViewScrollListener;
 import com.developers.chukimmuoi.shared.ui.recycler.view.IBaseRecyclerView;
+
+import java.util.List;
 
 /**
  * @author : Hanet Electronics
@@ -30,9 +33,14 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
 
     private Context mContext;
 
+    private int mTypeLayout = 0xa;
+
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
+
+    private EndlessRecyclerViewScrollListener mEndlessScrollListener;
+    private OnEndlessScrolling mOnEndlessScrolling;
 
     public BaseRecyclerView(Context context) {
         super(context);
@@ -70,6 +78,7 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
     @Override
     public void initLayoutManager(int typeLayout, int spanCount,
                                   boolean isHorizontal, boolean isReverse) {
+        mTypeLayout = typeLayout;
         switch (typeLayout) {
             case LINEAR_LAYOUT:
                 mLinearLayoutManager = new LinearLayoutManager(mContext, isHorizontal
@@ -127,5 +136,75 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
     @Override
     public void addOnScrollListener(OnScrollListener listener) {
         super.addOnScrollListener(listener);
+    }
+
+    public interface OnEndlessScrolling {
+        /**
+         * Load new data
+         *
+         * @see {http://stackoverflow.com/questions/39445330/cannot-call-notifyiteminserted-method-in-a-scroll-callback-recyclerview-v724-2}
+         * <p>
+         * view.post(() -> mAdapter.insertItem(positionStart, insertList));
+         * {@link BaseRecyclerAdapter#insertItem(int, List)}
+         */
+        void loadNextPage(int page, int totalItemsCount, RecyclerView view);
+
+        /**
+         * Clear all data ---> new action.
+         * <p>
+         * mList.clear();
+         * mAdapter.notifyDataSetChanged(); {@link BaseRecyclerAdapter#reloadAll()}
+         * mEndlessScrollListener.resetState(); {@link #resetStateEndless()}
+         */
+        void resetEndless();
+    }
+
+    public boolean resetStateEndless() {
+        if (mEndlessScrollListener != null) {
+            mEndlessScrollListener.resetState();
+            return true;
+        }
+        return false;
+    }
+
+    public void setOnEndlessScrolling(OnEndlessScrolling onEndlessScrolling) {
+        this.mOnEndlessScrolling = onEndlessScrolling;
+
+        switch (mTypeLayout) {
+            case LINEAR_LAYOUT:
+                mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                        actionLoadMore(page, totalItemsCount, view);
+                    }
+                };
+                break;
+            case GRID_LAYOUT:
+                mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mGridLayoutManager) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                        actionLoadMore(page, totalItemsCount, view);
+                    }
+                };
+                break;
+            case STAGGERED_GRID_LAYOUT:
+                mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mStaggeredGridLayoutManager) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                        actionLoadMore(page, totalItemsCount, view);
+                    }
+                };
+                break;
+        }
+
+        if (mEndlessScrollListener != null) {
+            addOnScrollListener(mEndlessScrollListener);
+        }
+    }
+
+    private void actionLoadMore(int page, int totalItemsCount, RecyclerView view) {
+        if (mOnEndlessScrolling != null) {
+            mOnEndlessScrolling.loadNextPage(page, totalItemsCount, view);
+        }
     }
 }

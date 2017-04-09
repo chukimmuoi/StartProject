@@ -52,8 +52,19 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
     protected void displayItem(ViewHolder viewHolder, int position) {
         Contact item = (Contact) mList.get(position);
 
-        viewHolder.contactName.setText(item.getName() + ", " + position);
-        viewHolder.messageButton.setText("Message");
+        TextView textView = viewHolder.contactName;
+        textView.setText(item.getName() + ", " + position);
+
+        Button button = viewHolder.messageButton;
+        if (item.isOnline()) {
+            button.setText("Message");
+            button.setEnabled(true);
+        } else {
+            button.setText("Offline");
+            button.setEnabled(false);
+        }
+
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

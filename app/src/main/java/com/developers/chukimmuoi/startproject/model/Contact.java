@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by chukimmuoi on 4/2/17.
  */
 
-public class Contact extends Object {
+public class Contact {
     private String name;
 
     private boolean isOnline;
@@ -40,11 +40,13 @@ public class Contact extends Object {
 
     private static int lastContactId = 0;
 
-    public static ArrayList<? super Object> createContactList(int number) {
+    public static ArrayList<? super Object> createContactsList(int numContacts, int offset) {
         ArrayList<? super Object> contacts = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-            contacts.add(new Contact("Person " + lastContactId++, i <= number / 2));
+
+        for (int i = 1; i <= numContacts; i++) {
+            contacts.add(new Contact("Person " + ++lastContactId + " offset: " + offset, i <= numContacts / 2));
         }
+
         return contacts;
     }
 }

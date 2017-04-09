@@ -73,16 +73,24 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      *
      * @param position getItemCount or mList.size()
      * @param object   new object
+     * @param isScroll
      */
     @Override
-    public void insertItem(int position, Object object) {
+    public void insertItem(int position, Object object, boolean isScroll) {
         if (position >= 0 && object != null) {
             mList.add(position, object);
 
             notifyItemInserted(position);
 
-            mRecyclerView.scrollToPosition(position);
+            if (isScroll) {
+                mRecyclerView.scrollToPosition(position);
+            }
         }
+    }
+
+    @Override
+    public void insertItem(int position, Object object) {
+        insertItem(position, object, false);
     }
 
     /**
@@ -90,9 +98,10 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      *
      * @param positionStart getItemCount or mList.size()
      * @param insertList    list object
+     * @param isScroll
      */
     @Override
-    public void insertItem(int positionStart, List<? super Object> insertList) {
+    public void insertItem(int positionStart, List<? super Object> insertList, boolean isScroll) {
         if (positionStart >= 0 && insertList != null) {
             int itemCount = insertList.size();
             if (itemCount > 0) {
@@ -100,23 +109,38 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
 
                 notifyItemRangeInserted(positionStart, itemCount);
 
-                mRecyclerView.scrollToPosition(positionStart);
+                if (isScroll) {
+                    mRecyclerView.scrollToPosition(positionStart);
+                }
             }
         }
+    }
+
+    @Override
+    public void insertItem(int positionStart, List<? super Object> insertList) {
+        insertItem(positionStart, insertList, false);
     }
 
     /**
      * Update item
      *
      * @param position all in 0 <= position < getItemCount or mList.size()
+     * @param isScroll
      */
     @Override
-    public void updateItem(int position) {
+    public void updateItem(int position, boolean isScroll) {
         if (position >= 0 && position < getItemCount()) {
             notifyItemChanged(position);
 
-            mRecyclerView.scrollToPosition(position);
+            if (isScroll) {
+                mRecyclerView.scrollToPosition(position);
+            }
         }
+    }
+
+    @Override
+    public void updateItem(int position) {
+        updateItem(position, false);
     }
 
     /**
@@ -124,31 +148,47 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      *
      * @param positionStart all in 0 <= position < getItemCount or mList.size()
      * @param itemCount     size of list update. eg: list.size()
+     * @param isScroll
      */
     @Override
-    public void updateItem(int positionStart, int itemCount) {
+    public void updateItem(int positionStart, int itemCount, boolean isScroll) {
         if (positionStart >= 0 && itemCount > 0 && (positionStart + itemCount) < getItemCount()) {
             notifyItemRangeChanged(positionStart, itemCount);
 
-            mRecyclerView.scrollToPosition(positionStart);
+            if (isScroll) {
+                mRecyclerView.scrollToPosition(positionStart);
+            }
         }
+    }
+
+    @Override
+    public void updateItem(int positionStart, int itemCount) {
+        updateItem(positionStart, itemCount, false);
     }
 
     /**
      * Remove item
      *
      * @param position all in 0 <= position < getItemCount or mList.size()
+     * @param isScroll
      */
     @Override
-    public void removeItem(int position) {
+    public void removeItem(int position, boolean isScroll) {
         if (position >= 0 && position < getItemCount()) {
             mList.remove(position);
 
             notifyItemRemoved(position);
 
-            int positionNew = position - 1;
-            mRecyclerView.scrollToPosition(positionNew >= 0 ? positionNew : 0);
+            if (isScroll) {
+                int positionNew = position - 1;
+                mRecyclerView.scrollToPosition(positionNew >= 0 ? positionNew : 0);
+            }
         }
+    }
+
+    @Override
+    public void removeItem(int position) {
+        removeItem(position, false);
     }
 
     /**
@@ -156,9 +196,10 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      *
      * @param positionStart all in 0 <= position < getItemCount or mList.size()
      * @param itemCount     size of list remove. eg: list.size()
+     * @param isScroll
      */
     @Override
-    public void removeItem(int positionStart, int itemCount) {
+    public void removeItem(int positionStart, int itemCount, boolean isScroll) {
         if (positionStart >= 0 && itemCount > 0 && (positionStart + itemCount) < getItemCount()) {
             for (int i = 0; i < itemCount; i++) {
                 mList.remove(positionStart);
@@ -166,9 +207,16 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
 
             notifyItemRangeRemoved(positionStart, itemCount);
 
-            int positionNew = positionStart - 1;
-            mRecyclerView.scrollToPosition(positionNew >= 0 ? positionNew : 0);
+            if (isScroll) {
+                int positionNew = positionStart - 1;
+                mRecyclerView.scrollToPosition(positionNew >= 0 ? positionNew : 0);
+            }
         }
+    }
+
+    @Override
+    public void removeItem(int positionStart, int itemCount) {
+        removeItem(positionStart, itemCount, false);
     }
 
     /**
@@ -176,9 +224,10 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      *
      * @param fromPosition
      * @param toPosition
+     * @param isScroll
      */
     @Override
-    public void movedItem(int fromPosition, int toPosition) {
+    public void movedItem(int fromPosition, int toPosition, boolean isScroll) {
         int sizeList = getItemCount();
         if (fromPosition >= 0 && fromPosition < sizeList
                 && toPosition >= 0 && toPosition < sizeList
@@ -189,8 +238,15 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
 
             notifyItemMoved(fromPosition, toPosition);
 
-            mRecyclerView.scrollToPosition(toPosition);
+            if (isScroll) {
+                mRecyclerView.scrollToPosition(toPosition);
+            }
         }
+    }
+
+    @Override
+    public void movedItem(int fromPosition, int toPosition) {
+        movedItem(fromPosition, toPosition, false);
     }
 
     /**
@@ -205,5 +261,10 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
         if (isScroll) {
             mRecyclerView.scrollToPosition(0);
         }
+    }
+
+    @Override
+    public void reloadAll() {
+        reloadAll(false);
     }
 }
