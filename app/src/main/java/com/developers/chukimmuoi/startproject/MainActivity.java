@@ -1,10 +1,12 @@
 package com.developers.chukimmuoi.startproject;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
+import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
 import com.developers.chukimmuoi.startproject.adapter.TestAdapter;
 import com.developers.chukimmuoi.startproject.model.Contact;
 
@@ -26,6 +28,8 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
     @BindView(R.id.btn_test)
     Button btnTest;
 
+    Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +44,20 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
 
     @Override
     public void loadNextPage(int page, int totalItemsCount, RecyclerView view) {
-        List<? super Object> moreContacts = Contact.createContactsList(9, page);
-        int curSize = mTestAdapter.getItemCount();
-        view.post(() -> mTestAdapter.insertItem(curSize, moreContacts));
+        int size = mListContact.size();
+        if (mListContact.get(size - 1) instanceof LoadMoreObject) {
+            return;
+        }
+        mTestAdapter.insertItem(size, new LoadMoreObject());
+
+        mHandler.postDelayed(() -> {
+            int size1 = mListContact.size();
+            mTestAdapter.removeItem(size1 - 1);
+
+            List<? super Object> moreContacts = Contact.createContactsList(10, page);
+            int curSize = mTestAdapter.getItemCount();
+            mTestAdapter.insertItem(curSize, moreContacts);
+        }, 1 * 1000);
     }
 
     @Override

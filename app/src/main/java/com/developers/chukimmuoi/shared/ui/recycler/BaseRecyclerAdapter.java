@@ -6,10 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developers.chukimmuoi.shared.ui.progress.CircleProgress;
+import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
 import com.developers.chukimmuoi.shared.ui.recycler.view.IBaseRecyclerAdapter;
+import com.developers.chukimmuoi.startproject.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author : Hanet Electronics
@@ -25,6 +30,10 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
         implements IBaseRecyclerAdapter {
 
     private static String TAG = BaseRecyclerAdapter.class.getSimpleName();
+
+    private static final int VIEW_ITEM = 0x1;
+
+    private static final int VIEW_PROGRESS = 0x2;
 
     protected Context mContext;
 
@@ -43,15 +52,28 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = setLayout(inflater, parent);
+        VH viewHolder = null;
 
-        VH viewHolder = createViewHolder(view);
+        if (viewType == VIEW_PROGRESS) {
+            View view = inflater.inflate(R.layout.item_circle_progress, parent, false);
+
+            viewHolder = (VH) new ProgressViewHolder(view);
+        } else if (viewType == VIEW_ITEM) {
+            View view = setLayout(inflater, parent);
+
+            viewHolder = createViewHolder(view);
+        }
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        displayItem(holder, position);
+        if (getItemViewType(position) == VIEW_ITEM) {
+            displayItem(holder, position);
+        } else if (getItemViewType(position) == VIEW_PROGRESS) {
+            ((ProgressViewHolder) holder).progressCircle.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -60,6 +82,30 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
             return mList.size();
         }
         return 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mList != null) {
+            if (mList.get(position) instanceof LoadMoreObject) {
+                return VIEW_PROGRESS;
+            } else {
+                return VIEW_ITEM;
+            }
+        }
+        return super.getItemViewType(position);
+    }
+
+    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.progress_circle)
+        CircleProgress progressCircle;
+
+        public ProgressViewHolder(View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
+        }
     }
 
     protected abstract View setLayout(LayoutInflater inflater, ViewGroup parent);
@@ -80,7 +126,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
         if (position >= 0 && object != null) {
             mList.add(position, object);
 
-            notifyItemInserted(position);
+            mRecyclerView.post(() -> notifyItemInserted(position));
 
             if (isScroll) {
                 mRecyclerView.scrollToPosition(position);
@@ -107,7 +153,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
             if (itemCount > 0) {
                 mList.addAll(positionStart, insertList);
 
-                notifyItemRangeInserted(positionStart, itemCount);
+                mRecyclerView.post(() -> notifyItemRangeInserted(positionStart, itemCount));
 
                 if (isScroll) {
                     mRecyclerView.scrollToPosition(positionStart);
@@ -130,7 +176,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
     @Override
     public void updateItem(int position, boolean isScroll) {
         if (position >= 0 && position < getItemCount()) {
-            notifyItemChanged(position);
+            mRecyclerView.post(() -> notifyItemChanged(position));
 
             if (isScroll) {
                 mRecyclerView.scrollToPosition(position);
@@ -153,7 +199,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
     @Override
     public void updateItem(int positionStart, int itemCount, boolean isScroll) {
         if (positionStart >= 0 && itemCount > 0 && (positionStart + itemCount) < getItemCount()) {
-            notifyItemRangeChanged(positionStart, itemCount);
+            mRecyclerView.post(() -> notifyItemRangeChanged(positionStart, itemCount));
 
             if (isScroll) {
                 mRecyclerView.scrollToPosition(positionStart);
@@ -177,7 +223,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
         if (position >= 0 && position < getItemCount()) {
             mList.remove(position);
 
-            notifyItemRemoved(position);
+            mRecyclerView.post(() -> notifyItemRemoved(position));
 
             if (isScroll) {
                 int positionNew = position - 1;
@@ -205,7 +251,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
                 mList.remove(positionStart);
             }
 
-            notifyItemRangeRemoved(positionStart, itemCount);
+            mRecyclerView.post(() -> notifyItemRangeRemoved(positionStart, itemCount));
 
             if (isScroll) {
                 int positionNew = positionStart - 1;
@@ -236,7 +282,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
             mList.remove(fromPosition);
             mList.add(toPosition, obj);
 
-            notifyItemMoved(fromPosition, toPosition);
+            mRecyclerView.post(() -> notifyItemMoved(fromPosition, toPosition));
 
             if (isScroll) {
                 mRecyclerView.scrollToPosition(toPosition);
@@ -256,7 +302,7 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
      */
     @Override
     public void reloadAll(boolean isScroll) {
-        notifyDataSetChanged();
+        mRecyclerView.post(() -> notifyDataSetChanged());
 
         if (isScroll) {
             mRecyclerView.scrollToPosition(0);
