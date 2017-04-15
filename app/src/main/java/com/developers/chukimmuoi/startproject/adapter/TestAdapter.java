@@ -63,8 +63,6 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
             button.setText("Offline");
             button.setEnabled(false);
         }
-
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

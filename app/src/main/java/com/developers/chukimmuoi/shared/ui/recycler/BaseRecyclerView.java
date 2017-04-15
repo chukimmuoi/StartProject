@@ -93,6 +93,22 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
                             ? GridLayoutManager.HORIZONTAL
                             : GridLayoutManager.VERTICAL, isReverse);
 
+                    //TODO: Load more full span (GridLayoutManager).
+                    mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                        @Override
+                        public int getSpanSize(int position) {
+                            BaseRecyclerAdapter adapter = (BaseRecyclerAdapter) getAdapter();
+                            switch (adapter.getItemViewType(position)) {
+                                case BaseRecyclerAdapter.VIEW_ITEM:
+                                    return 1;
+                                case BaseRecyclerAdapter.VIEW_PROGRESS:
+                                    return spanCount;
+                                default:
+                                    return 0;
+                            }
+                        }
+                    });
+
                     setLayoutManager(mGridLayoutManager);
                 }
                 break;

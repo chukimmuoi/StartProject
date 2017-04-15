@@ -2,6 +2,7 @@ package com.developers.chukimmuoi.shared.ui.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,9 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
 
     private static String TAG = BaseRecyclerAdapter.class.getSimpleName();
 
-    private static final int VIEW_ITEM = 0x1;
+    public static final int VIEW_ITEM = 0x1;
 
-    private static final int VIEW_PROGRESS = 0x2;
+    public static final int VIEW_PROGRESS = 0x2;
 
     protected Context mContext;
 
@@ -73,6 +74,13 @@ public abstract class BaseRecyclerAdapter<VH extends RecyclerView.ViewHolder> ex
             displayItem(holder, position);
         } else if (getItemViewType(position) == VIEW_PROGRESS) {
             ((ProgressViewHolder) holder).progressCircle.setVisibility(View.VISIBLE);
+
+            //TODO: Load more full span (StaggeredGridLayoutManager).
+            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+            if (layoutParams != null
+                    && layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+                ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
+            }
         }
     }
 
