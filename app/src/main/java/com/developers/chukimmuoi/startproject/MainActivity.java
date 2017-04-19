@@ -38,8 +38,9 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
         mListContact = Contact.createContactsList(10, 0);
         mTestAdapter = new TestAdapter(MainActivity.this, rvContact, mListContact);
         rvContact.setAdapter(mTestAdapter);
-        rvContact.initLinearLayoutManager();
+        rvContact.initLayoutManager(BaseRecyclerView.STAGGERED_GRID_LAYOUT, 2, false, false);
         rvContact.setOnEndlessScrolling(this);
+        rvContact.setHasFixedSize(true);
     }
 
     @Override

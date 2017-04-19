@@ -2,6 +2,7 @@ package com.developers.chukimmuoi.shared.ui.recycler;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,8 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
     public final static int GRID_LAYOUT = 0xb;
     public final static int STAGGERED_GRID_LAYOUT = 0xc;
 
+    private final static int SPACES_ITEM = 16;
+
     private Context mContext;
 
     private int mTypeLayout = 0xa;
@@ -42,21 +45,27 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
     private EndlessRecyclerViewScrollListener mEndlessScrollListener;
     private OnEndlessScrolling mOnEndlessScrolling;
 
+    private ItemDecoration mItemDecoration;
+
     public BaseRecyclerView(Context context) {
         super(context);
 
-        mContext = context;
+        constructor(context);
     }
 
     public BaseRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        mContext = context;
+        constructor(context);
     }
 
     public BaseRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
+        constructor(context);
+    }
+
+    private void constructor(Context context) {
         mContext = context;
     }
 
@@ -85,6 +94,13 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
                         ? LinearLayoutManager.HORIZONTAL
                         : LinearLayoutManager.VERTICAL, isReverse);
 
+                mItemDecoration = new SpacesItemDecoration
+                        .SpacesItemDecorationBuilder(SPACES_ITEM)
+                        .setLinearLayoutType(isHorizontal
+                                ? DividerItemDecoration.HORIZONTAL
+                                : DividerItemDecoration.VERTICAL)
+                        .build();
+
                 setLayoutManager(mLinearLayoutManager);
                 break;
             case GRID_LAYOUT:
@@ -109,6 +125,11 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
                         }
                     });
 
+                    mItemDecoration = new SpacesItemDecoration
+                            .SpacesItemDecorationBuilder(SPACES_ITEM)
+                            .setSpanCount(spanCount)
+                            .build();
+
                     setLayoutManager(mGridLayoutManager);
                 }
                 break;
@@ -118,10 +139,17 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
                             ? StaggeredGridLayoutManager.HORIZONTAL
                             : StaggeredGridLayoutManager.VERTICAL);
 
+                    mItemDecoration = new SpacesItemDecoration
+                            .SpacesItemDecorationBuilder(SPACES_ITEM)
+                            .setSpanCount(spanCount)
+                            .build();
+
                     setLayoutManager(mStaggeredGridLayoutManager);
                 }
                 break;
         }
+
+        addItemDecoration(mItemDecoration);
     }
 
     @Override
