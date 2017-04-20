@@ -2,10 +2,13 @@ package com.developers.chukimmuoi.startproject;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
+import com.developers.chukimmuoi.shared.ui.recycler.listener.OnClickRecyclerItemListener;
 import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
 import com.developers.chukimmuoi.startproject.adapter.TestAdapter;
 import com.developers.chukimmuoi.startproject.model.Contact;
@@ -38,9 +41,21 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
         mListContact = Contact.createContactsList(10, 0);
         mTestAdapter = new TestAdapter(MainActivity.this, rvContact, mListContact);
         rvContact.setAdapter(mTestAdapter);
-        rvContact.initLayoutManager(BaseRecyclerView.STAGGERED_GRID_LAYOUT, 2, false, false);
+        rvContact.initLayoutManager(BaseRecyclerView.LINEAR_LAYOUT, 2, false, false);
         rvContact.setOnEndlessScrolling(this);
         rvContact.setHasFixedSize(true);
+        rvContact.setItemAnimator(new DefaultItemAnimator());
+        rvContact.addOnItemTouchListener(new OnClickRecyclerItemListener(MainActivity.this, rvContact, new OnClickRecyclerItemListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showToast("Item click position = " + position);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+                showToast("Long item click position = " + position);
+            }
+        }));
     }
 
     @Override
