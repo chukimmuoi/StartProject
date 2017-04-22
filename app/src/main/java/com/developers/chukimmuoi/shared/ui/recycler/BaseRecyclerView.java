@@ -5,10 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.view.Gravity;
 
+import com.developers.chukimmuoi.shared.ui.recycler.gravitysnaphelper.GravityPagerSnapHelper;
+import com.developers.chukimmuoi.shared.ui.recycler.gravitysnaphelper.GravitySnapHelper;
 import com.developers.chukimmuoi.shared.ui.recycler.listener.EndlessRecyclerViewScrollListener;
 import com.developers.chukimmuoi.shared.ui.recycler.view.IBaseRecyclerView;
 
@@ -250,5 +255,44 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
         if (mOnEndlessScrolling != null) {
             mOnEndlessScrolling.loadNextPage(page, totalItemsCount, view);
         }
+    }
+
+    /**
+     * Use Linear Layout NOT Grid layout
+     *
+     * @param typeGravity {@link Gravity#CENTER} use linear layout VERTICAL & HORIZONTAL
+     *                    {@link Gravity#START}, {@link Gravity#END} use linear layout HORIZONTAL
+     *                    {@link Gravity#TOP}, {@link Gravity#BOTTOM} use linear layout VERTICAL
+     * @param isSnapPager use linear layout HORIZONTAL
+     * @see {https://github.com/rubensousa/RecyclerViewSnap}
+     */
+    public void setLinearSnapHelper(int typeGravity, boolean isSnapPager) {
+        if (mLinearLayoutManager != null) {
+            if (typeGravity == Gravity.CENTER) {
+                //Snap center: HORIZONTAL && VERTICAL.
+                SnapHelper snapHelper = new LinearSnapHelper();
+                setOnFlingListener(null);
+                snapHelper.attachToRecyclerView(this);
+                return;
+            }
+
+            if (isSnapPager) {
+                //Snap pager: HORIZONTAL ===> Gravity.START || Gravity.END.
+                GravityPagerSnapHelper gravityPagerSnapHelper
+                        = new GravityPagerSnapHelper(typeGravity);
+                setOnFlingListener(null);
+                gravityPagerSnapHelper.attachToRecyclerView(this);
+            } else {
+                //Snap normal: HORIZONTAL ===> Gravity.START || Gravity.END,
+                //             VERTICAL   ===> Gravity.TOP   || Gravity.BOTTOM.
+                GravitySnapHelper gravitySnapHelper = new GravitySnapHelper(typeGravity);
+                setOnFlingListener(null);
+                gravitySnapHelper.attachToRecyclerView(this);
+            }
+        }
+    }
+
+    public void setLinearSnapHelper(int typeGravity) {
+        setLinearSnapHelper(typeGravity, false);
     }
 }

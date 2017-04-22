@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
         mListContact = Contact.createContactsList(10, 0);
         mTestAdapter = new TestAdapter(MainActivity.this, rvContact, mListContact);
         rvContact.setAdapter(mTestAdapter);
-        rvContact.initLayoutManager(BaseRecyclerView.LINEAR_LAYOUT, 2, false, false);
+        rvContact.initLayoutManager(BaseRecyclerView.LINEAR_LAYOUT, 0, false, false);
         rvContact.setOnEndlessScrolling(this);
         rvContact.setHasFixedSize(true);
         rvContact.setItemAnimator(new DefaultItemAnimator());
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
                 showToast("Long item click position = " + position);
             }
         }));
+        rvContact.setLinearSnapHelper(Gravity.BOTTOM);
     }
 
     @Override
