@@ -23,4 +23,8 @@ public interface IBaseRecyclerView {
     void initGridLayoutManager(int spanCount);
 
     void initStaggeredGridLayoutManager(int spanCount);
+
+    void setLinearSnapHelper(int typeGravity, boolean isSnapPager);
+
+    void setLinearSnapHelper(int typeGravity);
 }

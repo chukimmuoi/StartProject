@@ -266,6 +266,7 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
      * @param isSnapPager use linear layout HORIZONTAL
      * @see {https://github.com/rubensousa/RecyclerViewSnap}
      */
+    @Override
     public void setLinearSnapHelper(int typeGravity, boolean isSnapPager) {
         if (mLinearLayoutManager != null) {
             if (typeGravity == Gravity.CENTER) {
@@ -292,6 +293,7 @@ public class BaseRecyclerView extends RecyclerView implements IBaseRecyclerView 
         }
     }
 
+    @Override
     public void setLinearSnapHelper(int typeGravity) {
         setLinearSnapHelper(typeGravity, false);
     }

@@ -100,13 +100,6 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         if (!TextUtils.isEmpty(positive)) {
             builder.positiveText(positive).positiveColorRes(R.color.colorDialogPositive);
             if (positiveCallback != null) {
-                //builder.onPositive(new MaterialDialog.SingleButtonCallback() {
-                //    @Override
-                //    public void onClick(@NonNull MaterialDialog dialog,
-                //                        @NonNull DialogAction which) {
-                //        positiveCallback.onAction(null);
-                //    }
-                //});
                 builder.onPositive((dialog, which) -> positiveCallback.onAction(null));
             }
         }
@@ -114,13 +107,6 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         if (!TextUtils.isEmpty(negative)) {
             builder.negativeText(negative).negativeColorRes(R.color.colorDialogNegative);
             if (negativeCallback != null) {
-                //builder.onNegative(new MaterialDialog.SingleButtonCallback() {
-                //    @Override
-                //    public void onClick(@NonNull MaterialDialog dialog,
-                //                        @NonNull DialogAction which) {
-                //        negativeCallback.onAction(null);
-                //    }
-                //});
                 builder.onNegative((dialog, which) -> negativeCallback.onAction(null));
             }
         }
@@ -128,12 +114,6 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
         if (!TextUtils.isEmpty(neutral)) {
             builder.neutralText(neutral).neutralColorRes(R.color.colorDialogNeutral);
             if (neutralCallback != null) {
-                //builder.onNeutral(new MaterialDialog.SingleButtonCallback() {
-                //    @Override
-                //    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                //        neutralCallback.onAction(null);
-                //    }
-                //});
                 builder.onNeutral((dialog, which) -> neutralCallback.onAction(null));
             }
         }
@@ -279,17 +259,6 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
 
     @Override
     public void showToast(final String message, final boolean isLongTime) {
-        //runOnUiThread(new Runnable() {
-        //    @Override
-        //    public void run() {
-        //        dismissToast();
-        //
-        //        mToast = Toast.makeText(getApplicationContext(), message,
-        //                isLongTime ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-        //        mToast.setGravity(Gravity.CENTER, 0, 0);
-        //        mToast.show();
-        //    }
-        //});
         runOnUiThread(() -> {
             dismissToast();
 
