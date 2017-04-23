@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.widget.Button;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
-import com.developers.chukimmuoi.shared.ui.recycler.listener.ItemRecyclerClickSupport;
 import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
 import com.developers.chukimmuoi.startproject.adapter.TestAdapter;
 import com.developers.chukimmuoi.startproject.model.Contact;
@@ -58,13 +57,13 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
 //        }));
         rvContact.setLinearSnapHelper(Gravity.BOTTOM);
 
-        ItemRecyclerClickSupport.addTo(rvContact).setOnItemClickListener((recyclerView, position, v) -> {
-            showToast("Item click position = " + position);
-        });
-        ItemRecyclerClickSupport.addTo(rvContact).setOnItemLongClickListener((recyclerView, position, v) -> {
-            showToast("Long item click position = " + position);
-            return true;
-        });
+//        ItemRecyclerClickSupport.addTo(rvContact).setOnItemClickListener((recyclerView, position, v) -> {
+//            showToast("Item click position = " + position);
+//        });
+//        ItemRecyclerClickSupport.addTo(rvContact).setOnItemLongClickListener((recyclerView, position, v) -> {
+//            showToast("Long item click position = " + position);
+//            return true;
+//        });
     }
 
     @Override
