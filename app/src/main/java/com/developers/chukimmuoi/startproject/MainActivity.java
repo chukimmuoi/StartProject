@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity
 //                showToast("Long item click position = " + position);
 //            }
 //        }));
+
         rvContact.setLinearSnapHelper(Gravity.BOTTOM);
 
 //        ItemRecyclerClickSupport.addTo(rvContact).setOnItemClickListener((recyclerView, position, v) -> {
