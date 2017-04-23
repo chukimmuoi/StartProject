@@ -47,7 +47,7 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
 
     @Override
     protected ViewHolder createViewHolder(View view) {
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, mListener);
         return viewHolder;
     }
 
@@ -68,7 +68,8 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private OnItemClickListener listener;
 
         @BindView(R.id.contact_name)
         TextView contactName;
@@ -76,19 +77,24 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
         @BindView(R.id.message_button)
         Button messageButton;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(v -> {
-                if (mListener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        mListener.onItemClick(TestAdapter.class.getName(), itemView, position);
-                    }
+            this.listener = listener;
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (listener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(TestAdapter.class.getName(), v, position);
                 }
-            });
+            }
         }
     }
 
