@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
 import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
+import com.developers.chukimmuoi.shared.ui.swipe.BaseSwipeRefreshLayout;
 import com.developers.chukimmuoi.startproject.adapter.TestAdapter;
 import com.developers.chukimmuoi.startproject.listener.onclick.OnItemClickListener;
 import com.developers.chukimmuoi.startproject.model.Contact;
@@ -28,10 +29,14 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.rv_contact)
     BaseRecyclerView rvContact;
 
-    TestAdapter mTestAdapter;
-    ArrayList<? super Object> mListContact;
     @BindView(R.id.btn_test)
     Button btnTest;
+
+    @BindView(R.id.swipeContainer)
+    BaseSwipeRefreshLayout swipeContainer;
+
+    TestAdapter mTestAdapter;
+    ArrayList<? super Object> mListContact;
 
     Handler mHandler = new Handler();
 
@@ -69,6 +74,15 @@ public class MainActivity extends BaseActivity
 //            showToast("Long item click position = " + position);
 //            return true;
 //        });
+
+        swipeContainer.setOnRefreshListener(() -> {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    swipeContainer.setRefreshing(false);
+                }
+            }, 3000);
+        });
     }
 
     @Override

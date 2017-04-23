@@ -12,12 +12,18 @@
         android:layout_height="wrap_content"
         android:text="Test" />
 
-    <com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView
-        android:id="@+id/rv_contact"
+    <com.developers.chukimmuoi.shared.ui.swipe.BaseSwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btn_test">
 
-    </com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView>
+        <com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView
+            android:id="@+id/rv_contact"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView>
+    </com.developers.chukimmuoi.shared.ui.swipe.BaseSwipeRefreshLayout>
 
 </RelativeLayout>

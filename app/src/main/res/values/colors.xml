@@ -17,4 +17,10 @@
 
     <!--PROGRESS-->
     <color name="colorProgressCircle">#5588FF</color>
+
+    <!--SWIPE REFRESH-->
+    <color name="colorSwipeBlue">#FF00DDFF</color>
+    <color name="colorSwipeGreen">#FF99CC00</color>
+    <color name="colorSwipeOrange">#FFFFBB33</color>
+    <color name="colorSwipeRed">#FFFF4444</color>
 </resources>
