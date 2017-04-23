@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerAdapter;
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
-import com.developers.chukimmuoi.startproject.BaseActivity;
 import com.developers.chukimmuoi.startproject.R;
+import com.developers.chukimmuoi.startproject.listener.onclick.OnItemClickListener;
 import com.developers.chukimmuoi.startproject.model.Contact;
 
 import java.util.ArrayList;
@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
 
     private static final String TAG = TestAdapter.class.getSimpleName();
+
+    private OnItemClickListener mListener;
 
     public TestAdapter(Context mContext, BaseRecyclerView recyclerView, ArrayList<? super Object> mList) {
         super(mContext, recyclerView, mList);
@@ -66,7 +68,7 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.contact_name)
         TextView contactName;
@@ -77,18 +79,20 @@ public class TestAdapter extends BaseRecyclerAdapter<TestAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(this);
-
             ButterKnife.bind(this, itemView);
-        }
 
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                Contact user = (Contact) mList.get(position);
-                ((BaseActivity) mContext).showToast("===> name " + user.getName());
-            }
+            itemView.setOnClickListener(v -> {
+                if (mListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        mListener.onItemClick(TestAdapter.class.getName(), itemView, position);
+                    }
+                }
+            });
         }
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.mListener = listener;
     }
 }

@@ -5,11 +5,13 @@ import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 
 import com.developers.chukimmuoi.shared.ui.recycler.BaseRecyclerView;
 import com.developers.chukimmuoi.shared.ui.recycler.model.LoadMoreObject;
 import com.developers.chukimmuoi.startproject.adapter.TestAdapter;
+import com.developers.chukimmuoi.startproject.listener.onclick.OnItemClickListener;
 import com.developers.chukimmuoi.startproject.model.Contact;
 
 import java.util.ArrayList;
@@ -18,7 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEndlessScrolling {
+public class MainActivity extends BaseActivity
+        implements BaseRecyclerView.OnEndlessScrolling, OnItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -39,6 +42,8 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
 
         mListContact = Contact.createContactsList(10, 0);
         mTestAdapter = new TestAdapter(MainActivity.this, rvContact, mListContact);
+        mTestAdapter.setListener(this);
+
         rvContact.setAdapter(mTestAdapter);
         rvContact.initLayoutManager(BaseRecyclerView.LINEAR_LAYOUT, 0, false, false);
         rvContact.setOnEndlessScrolling(this);
@@ -94,5 +99,12 @@ public class MainActivity extends BaseActivity implements BaseRecyclerView.OnEnd
     @OnClick(R.id.btn_test)
     public void onViewClicked() {
         resetEndless();
+    }
+
+    @Override
+    public void onItemClick(String className, View itemView, int position) {
+        if (className.equals(mTestAdapter.getClass().getName())) {
+            showToast("===> position = " + position);
+        }
     }
 }
