@@ -43,10 +43,20 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     testCompile 'junit:junit:4.12'
 
+    //Dialog
     compile 'com.afollestad.material-dialogs:commons:' + versions.dialog
 
+    //ButterKnife
     compile 'com.jakewharton:butterknife:' + versions.butterKnife
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + versions.butterKnife
 
+    //Recycler
     compile 'com.android.support:recyclerview-v7:' + versions.recycler
+
+    //RxJava
+    compile 'io.reactivex.rxjava2:rxandroid:' + versions.rxandroid
+    compile 'io.reactivex.rxjava2:rxjava:' + versions.rxjava
+
+    //Retrofit
+    compile 'com.squareup.retrofit2:retrofit:' + versions.retrofit
 }
