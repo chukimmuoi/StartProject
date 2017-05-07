@@ -12,6 +12,11 @@ android {
         versionCode versions.publishVersionCode
         versionName versions.publishVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //Jack tool chain
+        //jackOptions {
+        //    enabled true
+        //}
     }
 
     buildTypes {
