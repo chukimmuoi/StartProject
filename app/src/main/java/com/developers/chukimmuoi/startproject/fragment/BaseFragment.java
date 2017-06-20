@@ -226,12 +226,22 @@ public abstract class BaseFragment extends Fragment implements IBaseFragmentView
     }
 
     @Override
-    public void backStackFragment(FragmentManager fragmentManager) {
-        mContext.backStackFragment(fragmentManager);
+    public void backStackFragmentHome(FragmentManager fragmentManager) {
+        mContext.backStackFragmentHome(fragmentManager);
     }
 
     @Override
-    public void backStackFragment() {
-        backStackFragment(mFragmentManager);
+    public void backStackFragmentHome() {
+        backStackFragmentHome(mFragmentManager);
+    }
+
+    @Override
+    public void onBackPressed(FragmentManager fragmentManager) {
+        int countFragment = fragmentManager.getBackStackEntryCount();
+        if (countFragment > 1) {
+            fragmentManager.popBackStack();
+        } else {
+            mContext.onBackPressed();
+        }
     }
 }

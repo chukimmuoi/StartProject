@@ -409,16 +409,33 @@ public class BaseActivity extends FragmentActivity implements IBaseActivityView,
      * Event key back
      */
     @Override
-    public void backStackFragment(FragmentManager fragmentManager) {
+    public void backStackFragmentHome(FragmentManager fragmentManager) {
         int countFragment = fragmentManager.getBackStackEntryCount();
         if (countFragment > 0) {
-            fragmentManager.popBackStack();
+            FragmentManager.BackStackEntry firstFragment = fragmentManager.getBackStackEntryAt(0);
+            fragmentManager.popBackStack(firstFragment.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 
     @Override
-    public void backStackFragment() {
-        backStackFragment(mFragmentManager);
+    public void backStackFragmentHome() {
+        backStackFragmentHome(mFragmentManager);
+    }
+
+    @Override
+    public void onBackPressed(FragmentManager fragmentManager) {
+        int countFragment = fragmentManager.getBackStackEntryCount();
+        if (countFragment > 1) {
+            fragmentManager.popBackStack();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackPressed(mFragmentManager);
     }
 
     /**

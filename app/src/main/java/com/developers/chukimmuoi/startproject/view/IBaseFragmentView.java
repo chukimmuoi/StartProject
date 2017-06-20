@@ -46,7 +46,9 @@ public interface IBaseFragmentView {
     void displayMultiFragment(@IdRes int idLayoutContainer, Fragment fragment, String tag,
                               @Nullable String tagParent);
 
-    void backStackFragment(FragmentManager fragmentManager);
+    void backStackFragmentHome(FragmentManager fragmentManager);
 
-    void backStackFragment();
+    void backStackFragmentHome();
+
+    void onBackPressed(FragmentManager fragmentManager);
 }
